@@ -24,6 +24,6 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   await app.listen(envs.PORT);
-  logger.log(`The server is running on ${envs.PORT} port`);
+  logger.log(`Client Gateway is running on ${envs.PORT} port`);
 }
 bootstrap();
