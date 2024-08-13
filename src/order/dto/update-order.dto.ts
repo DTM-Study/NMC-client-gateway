@@ -1,7 +1,11 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateOrderDto } from 'src/common/dto/create-order.dto';
+
+import { IsEnum, IsNotEmpty } from "class-validator";
+import { OrderStatus } from "src/common/dto/filters-order.dto";
 
 
-export class UpdateOrderDto extends PartialType(CreateOrderDto) {
-  id: number;
+
+export class UpdateOrderDto  {
+  @IsNotEmpty({ message: 'El estado del pedido no puede estar vacío' })
+  @IsEnum(OrderStatus, { message:  `El estado del pedido debe ser un valor válido ${Object.values(OrderStatus)}` })
+  status: OrderStatus
 }
