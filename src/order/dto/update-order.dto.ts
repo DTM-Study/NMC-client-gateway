@@ -1,5 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateOrderDto } from './create-order.dto';
+import { CreateOrderDto } from 'src/common/dto/create-order.dto';
+
 
 export class UpdateOrderDto extends PartialType(CreateOrderDto) {
   id: number;
