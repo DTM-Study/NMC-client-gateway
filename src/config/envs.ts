@@ -2,31 +2,25 @@ import 'dotenv/config';
 import *  as joi from 'joi'
 interface EnvsVars {
     PORT: number;
-    PRODUCTS_MICROSERVICE_PORT : number;
-    PRODUCTS_MICROSERVICE_HOST : string;
-    ORDERS_MICROSERVICE_PORT : number;
-    ORDERS_MICROSERVICE_HOST : string;
-} 
+    NATS_HOSTS: string[];
+}
 
 const envSchema = joi.object({
     PORT: joi.number().required(),
-    PRODUCTS_MICROSERVICE_PORT: joi.number().required(),
-    PRODUCTS_MICROSERVICE_HOST: joi.string().required(), 
-    ORDERS_MICROSERVICE_PORT: joi.number().required(),
-    ORDERS_MICROSERVICE_HOST: joi.string().required(),
+    NATS_HOSTS: joi.array().items(joi.string()).required(),
 }).unknown(true);
 ;
 
-const { error, value } = envSchema.validate(process.env);
+const { error, value } = envSchema.validate({
+    ...process.env,
+    NATS_HOSTS: process.env.NATS_HOSTS.split(',')
+});
 
-if(error) {
+if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
 
-export const envs: EnvsVars = { 
+export const envs: EnvsVars = {
     PORT: value.PORT,
-    PRODUCTS_MICROSERVICE_HOST: value.PRODUCTS_MICROSERVICE_HOST,
-    PRODUCTS_MICROSERVICE_PORT: value.PRODUCTS_MICROSERVICE_PORT,
-    ORDERS_MICROSERVICE_HOST: value.ORDERS_MICROSERVICE_HOST,
-    ORDERS_MICROSERVICE_PORT: value.ORDERS_MICROSERVICE_PORT,
+    NATS_HOSTS: value.NATS_HOSTS
 };
